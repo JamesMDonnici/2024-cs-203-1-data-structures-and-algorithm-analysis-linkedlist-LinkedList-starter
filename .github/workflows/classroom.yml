@@ -1,7 +1,8 @@
 name: Autograding Tests
-'on':
-- workflow_dispatch
-- repository_dispatch
+
+on:
+  - push
+  - workflow_dispatch
 permissions:
   checks: write
   actions: read
@@ -87,7 +88,7 @@ jobs:
         max-score: 10
     - name: LinkedList test of the remove method that is supposed to return an index
         of the removed element
-      id: linkedlist-test-of-the-remove-method-that-is-supposed-to-return-an-index-of-the-removed-element
+      id: linkedlist-test-of-the-remove-method-that-returns-an-index-of-the-removed-element
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: LinkedList test of the remove method that is supposed to return
@@ -121,7 +122,7 @@ jobs:
         max-score: 10
     - name: LinkedList test of the add method that also takes in an index where the
         element must be inserted and testing the size as well
-      id: linkedlist-test-of-the-add-method-that-also-takes-in-an-index-where-the-element-must-be-inserted-and-testing-the-size-as-well
+      id: linkedlist-test-of-the-add-method-with-index-and-size
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: LinkedList test of the add method that also takes in an index where
@@ -141,10 +142,21 @@ jobs:
         LINKEDLIST-TEST-OF-THE-TOSTRING-METHOD-AFTER-ADDING-7-ELEMENTS_RESULTS: "${{steps.linkedlist-test-of-the-tostring-method-after-adding-7-elements.outputs.result}}"
         LINKEDLIST-TEST-OF-THE-REMOVE-METHOD-IN-A-NONEXISTENT-OBJECT_RESULTS: "${{steps.linkedlist-test-of-the-remove-method-in-a-nonexistent-object.outputs.result}}"
         LINKEDLIST-TEST-OF-REMOVING-AN-ELEMENT-BY-AN-INDEX_RESULTS: "${{steps.linkedlist-test-of-removing-an-element-by-an-index.outputs.result}}"
-        LINKEDLIST-TEST-OF-THE-REMOVE-METHOD-THAT-IS-SUPPOSED-TO-RETURN-AN-INDEX-OF-THE-REMOVED-ELEMENT_RESULTS: "${{steps.linkedlist-test-of-the-remove-method-that-is-supposed-to-return-an-index-of-the-removed-element.outputs.result}}"
+        LINKEDLIST-TEST-OF-THE-REMOVE-METHOD-THAT-RETURNS-AN-INDEX-OF-THE-REMOVED-ELEMENT_RESULTS: "${{steps.linkedlist-test-of-the-remove-method-that-returns-an-index-of-the-removed-element.outputs.result}}"
         LINKEDLIST-TEST-OF-THE-REMOVE-BY-INDEX-METHOD-THAT-ALSO-RETURNS-THE-REMOVED-OBJECT_RESULTS: "${{steps.linkedlist-test-of-the-remove-by-index-method-that-also-returns-the-removed-object.outputs.result}}"
         LINKEDLIST-TEST-OF-THE-REMOVE-AND-ADD-COMBO-WITH-A-TEST-FOR-SIZE-AT-THE-END_RESULTS: "${{steps.linkedlist-test-of-the-remove-and-add-combo-with-a-test-for-size-at-the-end.outputs.result}}"
-        ? LINKEDLIST-TEST-OF-THE-ADD-METHOD-THAT-ALSO-TAKES-IN-AN-INDEX-WHERE-THE-ELEMENT-MUST-BE-INSERTED-AND-TESTING-THE-SIZE-AS-WELL_RESULTS
-        : "${{steps.linkedlist-test-of-the-add-method-that-also-takes-in-an-index-where-the-element-must-be-inserted-and-testing-the-size-as-well.outputs.result}}"
+        LINKEDLIST-TEST-OF-THE-ADD-METHOD-WITH-INDEX-AND-SIZE_RESULTS: "${{steps.linkedlist-test-of-the-add-method-with-index-and-size.outputs.result}}"
       with:
-        runners: linkedlist-test-for-adding-2-elements,linkedlist-test-for-removing-the-first-element,linkedlist-test-for-removing-the-last-element,linkedlist-test-of-the-size-after-3-adds-and-1-remove,linkedlist-test-for-the-size-after-adding-2-elements,linkedlist-test-of-the-tostring-method-after-adding-7-elements,linkedlist-test-of-the-remove-method-in-a-nonexistent-object,linkedlist-test-of-removing-an-element-by-an-index,linkedlist-test-of-the-remove-method-that-is-supposed-to-return-an-index-of-the-removed-element,linkedlist-test-of-the-remove-by-index-method-that-also-returns-the-removed-object,linkedlist-test-of-the-remove-and-add-combo-with-a-test-for-size-at-the-end,linkedlist-test-of-the-add-method-that-also-takes-in-an-index-where-the-element-must-be-inserted-and-testing-the-size-as-well
+        runners: |
+          linkedlist-test-for-adding-2-elements,
+          linkedlist-test-for-removing-the-first-element,
+          linkedlist-test-for-removing-the-last-element,
+          linkedlist-test-of-the-size-after-3-adds-and-1-remove,
+          linkedlist-test-for-the-size-after-adding-2-elements,
+          linkedlist-test-of-the-tostring-method-after-adding-7-elements,
+          linkedlist-test-of-the-remove-method-in-a-nonexistent-object,
+          linkedlist-test-of-removing-an-element-by-an-index,
+          linkedlist-test-of-the-remove-method-that-returns-an-index-of-the-removed-element,
+          linkedlist-test-of-the-remove-by-index-method-that-also-returns-the-removed-object,
+          linkedlist-test-of-the-remove-and-add-combo-with-a-test-for-size-at-the-end,
+          linkedlist-test-of-the-add-method-with-index-and-size
