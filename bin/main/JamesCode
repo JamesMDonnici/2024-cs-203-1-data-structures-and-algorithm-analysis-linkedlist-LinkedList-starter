@@ -1,0 +1,125 @@
+public class LinkedList {
+
+    private Node head;
+    
+    // Node class represents an individual element in the LinkedList
+    private static class Node {
+        Object item;
+        Node next;
+
+        Node(Object item) {
+            this.item = item;
+            this.next = null;
+        }
+    }
+
+    /** 
+     * Removes the first matched object and
+     * returns the position of the removed object
+     * from the LinkedList.
+     * 
+     * @param   obj  represents the object the user wants to remove
+     * @return       position of the removed object
+     */
+    public int remove(Object obj) {
+        if (head == null) {
+            return -1; // List is empty, return -1 indicating no removal
+        }
+
+        Node current = head;
+        Node previous = null;
+        int position = 0;
+
+        // Traverse the list to find the object
+        while (current != null) {
+            if (current.item.equals(obj)) {
+                // If it's the first node
+                if (previous == null) {
+                    head = current.next; // Remove the head node
+                } else {
+                    previous.next = current.next; // Bypass the current node
+                }
+                return position; // Return the position where the object was removed
+            }
+            previous = current;
+            current = current.next;
+            position++;
+        }
+
+        return -1; // Object not found, return -1
+    }
+
+    /**
+     * Removes the object given its position and
+     * returns the removed object (not Node) from the LinkedList.
+     * 
+     * @param   position  represents the position of the object
+     *                    to be removed
+     * @return            the item that was removed
+     */
+    public Object remove(int position) {
+        if (head == null || position < 0) {
+            return null; // List is empty or invalid position
+        }
+
+        Node current = head;
+        Node previous = null;
+        int currentPosition = 0;
+
+        // Traverse to the position
+        while (current != null) {
+            if (currentPosition == position) {
+                // If it's the first node
+                if (previous == null) {
+                    head = current.next; // Remove the head node
+                } else {
+                    previous.next = current.next; // Bypass the current node
+                }
+                return current.item; // Return the removed object
+            }
+            previous = current;
+            current = current.next;
+            currentPosition++;
+        }
+
+        return null; // Position out of range
+    }
+
+    /**
+     * Adds the object given its position in the LinkedList.
+     * 
+     * @param   obj       represents the object to be added
+     * @param   position  represents the position of the object
+     *                    to be added in the LinkedList
+     */
+    public void add(Object obj, int position) {
+        if (position < 0) {
+            throw new IndexOutOfBoundsException("Position cannot be negative");
+        }
+
+        Node newNode = new Node(obj);
+        if (position == 0) {
+            // If adding at the head
+            newNode.next = head;
+            head = newNode;
+            return;
+        }
+
+        Node current = head;
+        int currentPosition = 0;
+
+        // Traverse to the node just before the desired position
+        while (current != null && currentPosition < position - 1) {
+            current = current.next;
+            currentPosition++;
+        }
+
+        if (current == null) {
+            throw new IndexOutOfBoundsException("Position exceeds the size of the list");
+        }
+
+        // Insert the new node at the desired position
+        newNode.next = current.next;
+        current.next = newNode;
+    }
+}
