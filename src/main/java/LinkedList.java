@@ -1,95 +1,135 @@
-
-class Node {
-    Object obj;
-    Node next;
-
-    public Node() {
-        obj = null;
-    }
-
-    public Node(Object obj) {
-        this.obj = obj;
-    }
-
-    public String toString() {
-        return obj.toString();
-    }
-}
-
 public class LinkedList {
+
     private Node head;
-    private Node tail;
     private int size;
 
+    private static class Node {
+        Object data;
+        Node next;
+
+        Node(Object data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
     public LinkedList() {
-        head = tail = null;
+        this.head = null;
+        this.size = 0;
     }
 
     /**
-     * This method returns the print representation of the list.
-     * 
-     * @return the print representation of the list.
+     * Removes the first matched object and
+     * returns the position of the removed object
+     * from the LinkedList.
+     *
+     * @param obj represents the object the user wants to remove
+     * @return position of the removed object, or -1 if not found
      */
-    public String toString() {
-        String out = "";
-        for (Node n = head; n != null; n = n.next)
-            out += n.obj + " ";
+    public int remove(Object obj) {
+        if (head == null) return -1;
 
-        return out;
+        Node current = head;
+        Node previous = null;
+        int position = 0;
+
+        while (current != null) {
+            if ((current.data == null && obj == null) || (current.data != null && current.data.equals(obj))) {
+                if (previous == null) {
+                    // Removing the head
+                    head = current.next;
+                } else {
+                    // Bypass the current node
+                    previous.next = current.next;
+                }
+                size--;
+                return position;
+            }
+            previous = current;
+            current = current.next;
+            position++;
+        }
+
+        return -1; // Object not found
     }
 
     /**
-     * This method returns the number of elements in this list.
-     * 
-     * @return the number of elements in this list.
+     * Removes the object given its position and
+     * returns the removed object (not Node) from the LinkedList.
+     *
+     * @param position represents the position of the object to be removed
+     * @return the item that was removed, or null if position is invalid
      */
+    public Object remove(int position) {
+        if (position < 0 || position >= size) return null;
+
+        Node current = head;
+        Node previous = null;
+        Object removedData;
+
+        if (position == 0) {
+            // Removing the head
+            removedData = head.data;
+            head = head.next;
+        } else {
+            for (int i = 0; i < position; i++) {
+                previous = current;
+                current = current.next;
+            }
+            // Remove the node
+            removedData = current.data;
+            previous.next = current.next;
+        }
+
+        size--;
+        return removedData;
+    }
+
+    /**
+     * Adds the object given its position in the LinkedList.
+     *
+     * @param obj      represents the object to be added
+     * @param position represents the position of the object to be added in the LinkedList
+     */
+    public void add(Object obj, int position) {
+        if (position < 0 || position > size) {
+            throw new IndexOutOfBoundsException("Position out of bounds");
+        }
+
+        Node newNode = new Node(obj);
+
+        if (position == 0) {
+            // Insert at the head
+            newNode.next = head;
+            head = newNode;
+        } else {
+            Node current = head;
+            for (int i = 0; i < position - 1; i++) {
+                current = current.next;
+            }
+            // Insert in the middle or end
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+
+        size++;
+    }
+
+    // Additional utility methods for testing (e.g., size, toString)
     public int size() {
         return size;
     }
 
-    /**
-     * This method adds an Object to the end of the LinkedList.
-     * 
-     * @param obj it can be of any type - super cool stuff.
-     */
-    public void add(Object obj) {
-        Node node = new Node(obj);
-        
-        if (head == null && tail == null) {
-            head = tail = node;
-        } else {
-            tail.next = node;
-            tail = node;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Node current = head;
+        while (current != null) {
+            sb.append(current.data);
+            if (current.next != null) sb.append(", ");
+            current = current.next;
         }
-        size++;
+        sb.append("]");
+        return sb.toString();
     }
-
-    /**
-     * The method returns the found object based on the passed index.
-     * It throws an Exception saying that you messed up, and you gotta fix it.
-     * Starts at 0 but supports negatives and wraps the index around within
-     * the limits of the list.
-     * 
-     * @param index the index of the object to be returned.
-     * @return the object at the index.
-     */
-    public Object get(int index) {
-        Node temp = head;
-        for (int i = 0; i < index; i++) {
-            temp = temp.next;
-        }
-        return temp.obj;
-    }
-    
-    public static void main(String[] args) {
-        LinkedList vitaly = new LinkedList();
-        vitaly.add(13);
-        vitaly.add(73);
-        vitaly.add(95);
-        vitaly.add(2);
-        System.out.println(vitaly.get(4));
-
-        System.out.println(vitaly);
-
-     }
 }
